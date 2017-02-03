@@ -75,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CameraTrack.cs" />
     <Compile Include="Assets\Scripts\BatterySpawner.cs" />
     <Compile Include="Assets\Scripts\CollisionHelper.cs" />
     <Compile Include="Assets\Scripts\Conditions\CollisionCondition.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Assets\Scripts\Mixins\isUsable.cs" />
     <Compile Include="Assets\Scripts\MusicManager.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\PowerBar.cs" />
     <Compile Include="Assets\Scripts\Responses\AnimatorSetTriggerResponse.cs" />
     <Compile Include="Assets\Scripts\Responses\DebugResponse.cs" />
     <Compile Include="Assets\Scripts\Responses\DestroyOtherResponse.cs" />
