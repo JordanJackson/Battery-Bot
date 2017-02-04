@@ -7,12 +7,19 @@ public class Player : MonoBehaviour
     public GameObject body;
     public Transform groundCheck;
 
+    public float powerDecayRate;
+    float decayTimer;
+
     public int maxPower;
     public float maxSpeed;
     public float maxJump;
 
     public Color fullColor;
     public Color emptyColor;
+
+    public float jumpHeight;
+
+    public int layer = 8;
 
     Animator animator;
     Renderer[] playerRenderers;
@@ -24,12 +31,33 @@ public class Player : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         playerRenderers = GetComponentsInChildren<Renderer>();
+        gameObject.layer = layer;
+        decayTimer = 0;
     }
 
     void Update()
     {
+        DecayPower();
         UpdateAgent();
         SetColor();
+    }
+
+    void DecayPower()
+    {
+        decayTimer += Time.deltaTime;
+        if (decayTimer >= powerDecayRate)
+        {
+            decayTimer = 0;
+            IntData[] intDataArr = this.GetComponents<IntData>();
+            foreach (IntData intData in intDataArr)
+            {
+                if (intData.Name == "Power")
+                {
+                    intData.data -= 1;
+                    break;
+                }
+            }
+        }
     }
 
     void UpdateAgent()
@@ -51,7 +79,11 @@ public class Player : MonoBehaviour
                 power = maxPower;
             }
             float speed = ((float)power / (float)maxPower) * maxSpeed;
+            float jump = ((float)power / (float)maxPower);
             agent.speed = speed;
+            float curveHeight = animator.GetFloat("jumpHeight");
+            Vector3 jumpOffset = new Vector3(0.0f, jump * curveHeight * jumpHeight, 0.0f);
+            this.transform.position += jumpOffset;
 
             animator.SetFloat("moveSpeed", Vector3.Magnitude(agent.velocity));
         }

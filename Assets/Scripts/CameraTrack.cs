@@ -12,7 +12,7 @@ public class CameraTrack : MonoBehaviour
     {
         if (trackTransform != null & lookTransform != null)
         {
-            this.transform.position = trackTransform.position;
+            this.transform.position += (trackTransform.position - this.transform.position) * kh * Time.deltaTime;
             this.transform.LookAt(lookTransform.transform);
         }
     }
