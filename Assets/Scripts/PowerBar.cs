@@ -8,12 +8,14 @@ public class PowerBar : MonoBehaviour
     Player player;
     IntData powerData;
     Slider powerSlider;
+    Text powerText;
 
     private void Start()
     {
         player = GameObject.FindObjectOfType<Player>();
         IntData[] datas = player.GetComponents<IntData>();
         powerSlider = GetComponent<Slider>();
+        powerText = GetComponentInChildren<Text>();
 
         foreach (IntData d in datas)
         {
@@ -36,6 +38,10 @@ public class PowerBar : MonoBehaviour
         if (powerData != null && powerSlider != null)
         {
             powerSlider.value = powerData.data;
+        }
+        if (powerData != null && powerText != null)
+        {
+            powerText.text = powerData.data.ToString();
         }
     }
 }

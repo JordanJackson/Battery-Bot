@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class Player : MonoBehaviour
@@ -16,6 +17,8 @@ public class Player : MonoBehaviour
 
     public Color fullColor;
     public Color emptyColor;
+    public Color fullEmissionColor;
+    public Color emptyEmissinoColor;
 
     public float jumpHeight;
 
@@ -35,11 +38,24 @@ public class Player : MonoBehaviour
         decayTimer = 0;
     }
 
+    private void Start()
+    {
+        IntData[] intDataArr = this.GetComponents<IntData>();
+        foreach (IntData intData in intDataArr)
+        {
+            if (intData.Name == "Power")
+            {
+                intData.data = maxPower / 2;
+                break;
+            }
+        }
+    }
+
     void Update()
     {
-        DecayPower();
-        UpdateAgent();
         SetColor();
+        UpdateAgent();
+        DecayPower();
     }
 
     void DecayPower()
@@ -54,6 +70,10 @@ public class Player : MonoBehaviour
                 if (intData.Name == "Power")
                 {
                     intData.data -= 1;
+                    if (intData.data <= 0)
+                    {
+                        LevelManager.Instance.LoadNextLevel();
+                    }
                     break;
                 }
             }
@@ -109,7 +129,12 @@ public class Player : MonoBehaviour
 
         foreach (Renderer r in playerRenderers)
         {
-            r.material.color = Color.Lerp(emptyColor, fullColor, lerpage);
+            if (r.gameObject.name == "Alpha_Surface")
+            {
+                r.material.color = Color.Lerp(emptyColor, fullColor, lerpage);
+                r.material.SetColor("_EmissionColor", Color.Lerp(emptyEmissinoColor, fullEmissionColor, lerpage));
+            }
+            
         }
         
     }
@@ -121,6 +146,7 @@ public class Player : MonoBehaviour
             if (animator)
             {
                 animator.SetTrigger("jump");
+                animator.ResetTrigger("jump");
             }
         }
     }

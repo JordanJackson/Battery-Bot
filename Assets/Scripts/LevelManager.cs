@@ -22,7 +22,6 @@ public class LevelManager : Singleton<LevelManager>
         previousScene = currentScene;
         currentScene = scene;
         Debug.Log("Scene loaded.");
-        MusicManager.Instance.PlayLevelMusic();
     }
 
     public void OnLevelUnloaded(Scene scene)
